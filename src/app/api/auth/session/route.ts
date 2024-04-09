@@ -5,8 +5,7 @@ import { User } from '../../../../../models/user';
 export async function GET(request: Request) {
   try {
     // await connectMongoDB();
-    // const { email } = await request.json();
-    // console.log('email', email);
+    const { email } = await request.json();
 
     // const user = await User.findOne({ email }).select('_id');
 
