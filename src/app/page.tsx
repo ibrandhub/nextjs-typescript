@@ -1,9 +1,20 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Navbar from '@/components/layout/Navbar';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
+  const { data: session } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!session) {
+      router.replace('/welcome');
+    }
+  }, [session, router]);
+
   return (
     <>
       <Navbar />

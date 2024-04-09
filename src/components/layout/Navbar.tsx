@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import React from 'react';
 import { signOut } from 'next-auth/react';
-import Register from '../../app/register/page';
 
 interface INav {
   session?: any;
@@ -28,7 +27,9 @@ function Navbar({ session }: INav) {
             </>
           ) : (
             <li className="bg-red-400 p-2 mx-2 rounded-md">
-              <a onClick={() => signOut()}>Logout</a>
+              <a className="cursor-pointer" onClick={() => signOut()}>
+                Logout
+              </a>
             </li>
           )}
         </ul>
