@@ -13,7 +13,7 @@ function Navbar({ session }: INav) {
     <>
       <nav className="bg-[#333] p-4 text-white flex justify-between items-center">
         <h1 className="font-bold text-3xl ">
-          <Link href="/">NextAuth</Link>
+          <Link href={session ? '/welcome' : '/'}>NextAuth</Link>
         </h1>
         <ul className="flex">
           {!session ? (

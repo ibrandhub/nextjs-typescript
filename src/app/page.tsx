@@ -9,8 +9,10 @@ export default function Home() {
   const { data: session } = useSession();
   const router = useRouter();
 
+  console.log(session);
+
   useEffect(() => {
-    if (!session) {
+    if (session) {
       router.replace('/welcome');
     }
   }, [session, router]);
