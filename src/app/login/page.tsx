@@ -1,39 +1,51 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import React from 'react';
-import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import Navbar from '@/components/layout/Navbar';
+import Link from "next/link";
+import React from "react";
+import { useRouter } from "next/navigation";
+import Navbar from "@/components/layout/Navbar";
+import { signIn } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 
 function Login() {
   const [error, setError] = React.useState<string | null>(null);
-
   const router = useRouter();
+
+  // const { data: session } = useSession();
+  // console.log(session);
+  // if (session) {
+  //   console.log('return')
+  //   return (
+  //     <>
+  //       Signin is as {session?.user?.email}{" "}
+  //       <button onClick={() => signOut}> Sign out</button>
+  //     </>
+  //   );
+  // }
 
   const handlerSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('handlerSubmit');
-
+    console.log("handlerSubmit", {
+      email: e.currentTarget.email.value,
+      password: e.currentTarget.password.value,
+      redirect: false,
+    });
     try {
-      const response = await signIn('credentials', {
+      const response: any = await signIn("credentials", {
         email: e.currentTarget.email.value,
         password: e.currentTarget.password.value,
         redirect: false,
       });
 
-      console.log('response login', response);
-
-      if (response?.error) {
-        setError('Invalid credentials !');
-        return;
-      }
-
-      if (response?.ok) {
-        router.push('/');
+      console.log("response login", response);
+      if (response.error) {
+        setError(response.error);
+      } else {
+        response.url = "/";
+        router.push(response.url); // Redirect to the URL returned by NextAuth.js
       }
     } catch (error) {
-      setError('An error occurred while logging in');
+      setError("An error occurred while logging in");
     }
   };
 
@@ -74,8 +86,8 @@ function Login() {
           </form>
 
           <div className="text-center my-3">
-            Go to{' '}
-            <Link href={'/register'} className="text-blue-500">
+            Go to{" "}
+            <Link href={"/register"} className="text-blue-500">
               Register
             </Link>
           </div>
