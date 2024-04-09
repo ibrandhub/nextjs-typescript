@@ -1,36 +1,39 @@
 'use client';
 
 import Link from 'next/link';
-import React from 'react';
-import { signIn } from 'next-auth/react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Navbar from '@/components/layout/Navbar';
+import { signIn } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 
-function Login() {
+function LoginPage() {
   const [error, setError] = React.useState<string | null>(null);
-
   const router = useRouter();
+
+  const { data: session } = useSession();
+
+  useEffect(() => {
+    if (session) {
+      router.replace('/welcome');
+    }
+  }, [session, router]);
 
   const handlerSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('handlerSubmit');
 
     try {
-      const response = await signIn('credentials', {
+      const response: any = await signIn('credentials', {
         email: e.currentTarget.email.value,
         password: e.currentTarget.password.value,
         redirect: false,
       });
 
-      console.log('response login', response);
-
-      if (response?.error) {
-        setError('Invalid credentials !');
-        return;
-      }
-
-      if (response?.ok) {
-        router.push('/');
+      if (response.error) {
+        setError(response.error);
+      } else {
+        response.url = '/welcome';
+        router.push(response.url);
       }
     } catch (error) {
       setError('An error occurred while logging in');
@@ -91,4 +94,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default LoginPage;
