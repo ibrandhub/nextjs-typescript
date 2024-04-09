@@ -11,7 +11,7 @@ export default function Home() {
       <>
         <Navbar />
         Signin is as {session?.user?.email}{" "}
-        <button onClick={() => signOut}> Sign out</button>
+        <button onClick={() => signOut()}> Sign out</button>
       </>
     );
   }
