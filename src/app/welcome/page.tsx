@@ -6,16 +6,7 @@ import Navbar from '@/components/layout/Navbar';
 export default function Welcome() {
   const { data: session } = useSession();
 
-  if (session) {
-    return (
-      <>
-        <Navbar session={session} />
-        <div className="max-w-screen-sm mx-auto py-10">
-          <h3 className="text-3xl font-bold"> Hello {session?.user?.email} </h3>
-        </div>
-      </>
-    );
-  } else {
+  if (!session) {
     return (
       <>
         <Navbar />
@@ -23,6 +14,15 @@ export default function Welcome() {
           <h1 className="text-3xl font-bold">Welcome Page</h1>
           <hr className="my-3" />
           <p>Please login to access the welcome page</p>
+        </div>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <Navbar session={session} />
+        <div className="max-w-screen-sm mx-auto py-10">
+          <h3 className="text-3xl font-bold"> Hello {session?.user?.email} </h3>
         </div>
       </>
     );
