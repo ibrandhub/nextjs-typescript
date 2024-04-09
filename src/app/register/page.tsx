@@ -3,14 +3,20 @@
 import Navbar from '@/components/layout/Navbar';
 import Link from 'next/link';
 import React from 'react';
+import { useSession } from 'next-auth/react';
+import { redirect } from 'next/navigation';
 
 function Register() {
   const [error, setError] = React.useState<string | null>(null);
 
+  const { data: session } = useSession();
+
+  if (session) {
+    redirect('/welcome');
+  }
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    console.log('Registering user', e);
 
     const formData = new FormData(e.currentTarget);
 
@@ -20,8 +26,6 @@ function Register() {
       password: formData.get('password'),
       confirmPassword: formData.get('confirmPassword'),
     };
-
-    console.log(data);
 
     if (data.password !== data.confirmPassword) {
       setError('Passwords do not match !');
@@ -56,8 +60,6 @@ function Register() {
         },
         body: JSON.stringify(data),
       });
-
-      console.log('response', response);
 
       if (response.ok) {
         const form = e.target;

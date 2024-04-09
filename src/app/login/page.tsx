@@ -1,51 +1,42 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import React from "react";
-import { useRouter } from "next/navigation";
-import Navbar from "@/components/layout/Navbar";
-import { signIn } from "next-auth/react";
-import { useSession, signOut } from "next-auth/react";
+import Link from 'next/link';
+import React, { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import Navbar from '@/components/layout/Navbar';
+import { signIn } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 
-function Login() {
+function LoginPage() {
   const [error, setError] = React.useState<string | null>(null);
   const router = useRouter();
 
-  // const { data: session } = useSession();
-  // console.log(session);
-  // if (session) {
-  //   console.log('return')
-  //   return (
-  //     <>
-  //       Signin is as {session?.user?.email}{" "}
-  //       <button onClick={() => signOut}> Sign out</button>
-  //     </>
-  //   );
-  // }
+  const { data: session } = useSession();
+
+  useEffect(() => {
+    if (session) {
+      router.replace('/welcome');
+    }
+  }, [session, router]);
 
   const handlerSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("handlerSubmit", {
-      email: e.currentTarget.email.value,
-      password: e.currentTarget.password.value,
-      redirect: false,
-    });
+
     try {
-      const response: any = await signIn("credentials", {
+      const response: any = await signIn('credentials', {
         email: e.currentTarget.email.value,
         password: e.currentTarget.password.value,
         redirect: false,
       });
 
-      console.log("response login", response);
       if (response.error) {
         setError(response.error);
       } else {
-        response.url = "/";
-        router.push(response.url); // Redirect to the URL returned by NextAuth.js
+        response.url = '/welcome';
+        router.push(response.url);
       }
     } catch (error) {
-      setError("An error occurred while logging in");
+      setError('An error occurred while logging in');
     }
   };
 
@@ -86,8 +77,8 @@ function Login() {
           </form>
 
           <div className="text-center my-3">
-            Go to{" "}
-            <Link href={"/register"} className="text-blue-500">
+            Go to{' '}
+            <Link href={'/register'} className="text-blue-500">
               Register
             </Link>
           </div>
@@ -103,4 +94,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default LoginPage;
