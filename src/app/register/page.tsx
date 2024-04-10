@@ -48,6 +48,8 @@ function Register() {
 
       const { user } = await responseCheck.json();
 
+      console.log(user);
+
       if (user) {
         setError('User already exists !');
         return;

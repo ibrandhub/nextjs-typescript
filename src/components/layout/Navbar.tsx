@@ -31,7 +31,10 @@ function Navbar({ session }: INav) {
                 <Link href="/profile">Profile</Link>
               </li>
               <li className="bg-red-400 p-2 mx-2 rounded-md">
-                <a className="cursor-pointer" onClick={() => signOut()}>
+                <a
+                  className="cursor-pointer"
+                  onClick={() => signOut({ redirect: false })}
+                >
                   Logout
                 </a>
               </li>

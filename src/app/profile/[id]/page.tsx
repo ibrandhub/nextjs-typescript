@@ -41,10 +41,8 @@ function ProfilePage({ params }: { params: { id: string } }) {
       role: formData.get('role'),
     };
 
-    const user: any = session?.user;
-
     try {
-      const response = await fetch(`/api/user/${user?.sub}`, {
+      const response = await fetch(`/api/user/${profile?._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
