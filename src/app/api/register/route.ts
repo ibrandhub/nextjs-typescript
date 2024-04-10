@@ -26,3 +26,24 @@ export async function POST(request: Request) {
     });
   }
 }
+
+export async function PUT(
+  request: Request,
+  { params }: { params: { id: number } }
+) {
+  try {
+    const { name } = await request.json();
+    await connectMongoDB();
+    await User.findByIdAndUpdate(params.id, { name });
+
+    return NextResponse.json({
+      message: 'User updated successfully!',
+      status: 200,
+    });
+  } catch (error) {
+    return NextResponse.json({
+      message: 'An error occurred while updating user',
+      status: 500,
+    });
+  }
+}

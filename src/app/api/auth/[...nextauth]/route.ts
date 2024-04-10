@@ -18,8 +18,6 @@ const hanlder = NextAuth({
       },
       async authorize(credentials): Promise<any> {
         try {
-          // Add your authentication logic here
-
           await connectMongoDB();
 
           const user = await User.findOne({ email: credentials?.email });
@@ -39,7 +37,7 @@ const hanlder = NextAuth({
             }
           }
 
-          return { email: user.email };
+          return user;
         } catch (error) {
           console.error('Authorization error:', error);
           return null;
@@ -47,6 +45,16 @@ const hanlder = NextAuth({
       },
     }),
   ],
+  callbacks: {
+    jwt: async ({ token, user }) => {
+      return token;
+    },
+
+    session: async ({ session, token, user }) => {
+      session.user = token;
+      return session;
+    },
+  },
 });
 
 export { hanlder as GET, hanlder as POST };

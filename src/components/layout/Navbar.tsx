@@ -26,11 +26,16 @@ function Navbar({ session }: INav) {
               </li>
             </>
           ) : (
-            <li className="bg-red-400 p-2 mx-2 rounded-md">
-              <a className="cursor-pointer" onClick={() => signOut()}>
-                Logout
-              </a>
-            </li>
+            <>
+              <li className="bg-blue-500 p-2 mx-2 rounded-md">
+                <Link href="/profile">Profile</Link>
+              </li>
+              <li className="bg-red-400 p-2 mx-2 rounded-md">
+                <a className="cursor-pointer" onClick={() => signOut()}>
+                  Logout
+                </a>
+              </li>
+            </>
           )}
         </ul>
       </nav>
